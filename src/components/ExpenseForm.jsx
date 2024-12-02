@@ -12,12 +12,31 @@ const categories = [
 export default function ExpenseForm({ onClose }) {
   const { register, handleSubmit, formState: { errors } } = useForm()
 
-  const onSubmit = (data) => {
-    // Simulate API call
-    console.log(data)
-    toast.success('Expense added successfully')
-    onClose()
-  }
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/expenses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}` // Assuming you store the JWT token in localStorage
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result); // For debugging, to see the response from the backend
+        toast.success('Expense added successfully');
+        onClose(); // Close the form if needed
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.message || 'Failed to add expense');
+      }
+    } catch (error) {
+      console.error('Error adding expense:', error);
+      toast.error('An error occurred');
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

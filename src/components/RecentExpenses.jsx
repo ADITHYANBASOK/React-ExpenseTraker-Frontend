@@ -1,10 +1,44 @@
-const recentExpenses = [
-  { id: 1, date: '2023-11-01', category: 'Food', amount: 25.50, notes: 'Lunch' },
-  { id: 2, date: '2023-11-02', category: 'Transport', amount: 15.00, notes: 'Bus fare' },
-  { id: 3, date: '2023-11-03', category: 'Entertainment', amount: 50.00, notes: 'Movie tickets' },
-]
+import React, { useEffect, useState } from 'react';
 
 export default function RecentExpenses() {
+  const [recentExpenses, setRecentExpenses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRecentExpenses = async () => {
+      try {
+        const token = localStorage.getItem('token'); // Assuming JWT token is stored in localStorage
+        const response = await fetch('http://localhost:5000/api/expenses?limit=3&sort=-date', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch expenses');
+        }
+
+        const expenses = await response.json();
+        setRecentExpenses(expenses);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecentExpenses();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
       <div className="p-6">
@@ -22,7 +56,7 @@ export default function RecentExpenses() {
             <tbody>
               {recentExpenses.map((expense) => (
                 <tr key={expense.id} className="border-b dark:border-gray-700">
-                  <td className="py-3">{expense.date}</td>
+                  <td className="py-3">{new Date(expense.date).toLocaleDateString()}</td>
                   <td className="py-3">{expense.category}</td>
                   <td className="py-3">${expense.amount.toFixed(2)}</td>
                   <td className="py-3">{expense.notes}</td>
@@ -33,5 +67,5 @@ export default function RecentExpenses() {
         </div>
       </div>
     </div>
-  )
+  );
 }

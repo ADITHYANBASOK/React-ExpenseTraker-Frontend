@@ -7,6 +7,8 @@ import { Toaster } from 'react-hot-toast'
 import App from './App'
 import './index.css'
 import { AuthProvider } from './hooks/useAuth'
+import { BudgetProvider } from './hooks/useBudget'
+
 
 const queryClient = new QueryClient()
 
@@ -15,8 +17,10 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <BudgetProvider>
           <App />
           <Toaster position="top-right" />
+          </BudgetProvider>
         </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>

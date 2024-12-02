@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
 export default function Register() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { register } = useAuth()
@@ -10,7 +11,7 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const success = await register(email, password)
+    const success = await register(name, email, password)
     if (success) {
       navigate('/')
     }
@@ -26,6 +27,21 @@ export default function Register() {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
+            <div>
+              <label htmlFor="name" className="sr-only">
+                Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                className="input"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
             <div>
               <label htmlFor="email" className="sr-only">
                 Email address

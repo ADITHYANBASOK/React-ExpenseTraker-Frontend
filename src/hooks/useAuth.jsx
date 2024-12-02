@@ -11,32 +11,46 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     try {
-      // Simulate API call
-      if (email === 'demo@example.com' && password === 'password') {
-        const user = { id: 1, email }
-        setUser(user)
-        localStorage.setItem('user', JSON.stringify(user))
-        return true
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }), // Send email and password
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const user = { id: data.userId, email: data.email }; // Assuming backend returns userId and email
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', data.token);
+        return true;
       }
-      throw new Error('Invalid credentials')
+      throw new Error('Invalid credentials');
     } catch (error) {
-      toast.error(error.message)
-      return false
+      toast.error(error.message);
+      return false;
     }
-  }
+  };
 
-  const register = async (email, password) => {
+  const register = async (name, email, password) => {
     try {
-      // Simulate API call
-      const user = { id: 1, email }
-      setUser(user)
-      localStorage.setItem('user', JSON.stringify(user))
-      return true
+      const response = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }), // Include name here
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUser({ id: data.id, email });
+        localStorage.setItem('user', JSON.stringify({ id: data.id, email }));
+        localStorage.setItem('token', data.token);
+        return true;
+      }
+      throw new Error('Failed to register');
     } catch (error) {
-      toast.error(error.message)
-      return false
+      toast.error(error.message);
+      return false;
     }
-  }
+  };
 
   const logout = () => {
     setUser(null)
