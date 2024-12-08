@@ -18,7 +18,7 @@ export default function BudgetManager() {
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Budget Overview</h2>
+        <h2 className="text-lg font-semibold">This Month Budget Overview</h2>
         <button
           onClick={() => setIsEditing(!isEditing)}
           className="text-primary-600 hover:text-primary-700"

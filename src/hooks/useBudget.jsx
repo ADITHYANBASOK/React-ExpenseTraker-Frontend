@@ -20,10 +20,11 @@ export function BudgetProvider({ children }) {
           setBudget(budgetData.amount || 0);
 
           // Fetch expenses
-          const expensesResponse = await fetch('http://localhost:5000/api/expenses', {
+          const expensesResponse = await fetch('http://localhost:5000/api/expenses/currentMonth', {
             headers: { Authorization: `Bearer ${token}` },
           });
           const expensesData = await expensesResponse.json();
+          console.log("expensesData",expensesData)
           
           // Calculate total expenses
           const total = expensesData.reduce((acc, expense) => acc + expense.amount, 0);

@@ -171,6 +171,7 @@ export default function ExpenseTable() {
   }, []);
 
   const groupByMonth = expenses => {
+    console.log("expenses",expenses)
     return expenses.reduce((acc, expense) => {
       const month = new Date(expense.date).toLocaleString('default', {
         month: 'long',
@@ -200,49 +201,55 @@ export default function ExpenseTable() {
     return <p className="text-red-600">Error: {error}</p>;
   }
 
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-      {Object.entries(groupedExpenses).map(([month, expenses]) => (
-        <div key={month} className="mb-8">
-          <h2 className="text-lg font-bold p-4 bg-gray-100 dark:bg-gray-700">
-            {month}
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                {table.getHeaderGroups().map(headerGroup => (
-                  <tr key={headerGroup.id} className="border-b dark:border-gray-700">
-                    {headerGroup.headers.map(header => (
-                      <th key={header.id} className="text-left p-4">
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </th>
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+        {Object.entries(groupedExpenses).map(([month, expenses]) => {
+          // Calculate the total for the current month
+          const totalMonthExpense = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+    
+          return (
+            <div key={month} className="mb-8">
+              <h2 className="text-lg font-bold p-4 bg-gray-100 dark:bg-gray-700">
+                {month} - Total: ${totalMonthExpense.toFixed(2)}
+              </h2>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    {table.getHeaderGroups().map(headerGroup => (
+                      <tr key={headerGroup.id} className="border-b dark:border-gray-700">
+                        {headerGroup.headers.map(header => (
+                          <th key={header.id} className="text-left p-4">
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </th>
+                        ))}
+                      </tr>
                     ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {expenses.map(expense => (
-                  <tr
-                    key={expense._id}
-                    className="border-b dark:border-gray-700"
-                  >
-                    <td className="p-4">
-                      {new Date(expense.date).toLocaleDateString()}
-                    </td>
-                    <td className="p-4">{expense.category}</td>
-                    <td className="p-4">${expense.amount.toFixed(2)}</td>
-                    <td className="p-4">{expense.notes}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+                  </thead>
+                  <tbody>
+                    {expenses.map(expense => (
+                      <tr
+                        key={expense._id}
+                        className="border-b dark:border-gray-700"
+                      >
+                        <td className="p-4">
+                          {new Date(expense.date).toLocaleDateString()}
+                        </td>
+                        <td className="p-4">{expense.category}</td>
+                        <td className="p-4">${expense.amount.toFixed(2)}</td>
+                        <td className="p-4">{expense.notes}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+    
 }
 

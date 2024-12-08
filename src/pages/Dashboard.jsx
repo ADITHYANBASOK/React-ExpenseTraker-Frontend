@@ -86,6 +86,7 @@ import { Line, Pie } from 'react-chartjs-2';
 import ExpenseStats from '../components/ExpenseStats';
 import RecentExpenses from '../components/RecentExpenses';
 import BudgetManager from '../components/BudgetManager';
+import BudgetOverviewSlider from '../components/BudgetOverviewSlider';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -100,7 +101,7 @@ export default function Dashboard() {
     const fetchChartData = async () => {
       try {
         const token = localStorage.getItem('token'); // Assuming JWT token is stored in localStorage
-        console.log('token',token)
+        console.log('token', token)
         const response = await fetch(`http://localhost:5000/api/expenses/dashboard?timeframe=${timeframe}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -112,7 +113,7 @@ export default function Dashboard() {
         }
 
         const data = await response.json();
-        console.log("data",data)
+        console.log("data", data)
         // Assume backend sends data in the following structure:
         // { monthlyTrend: { labels: [...], data: [...] }, categoryBreakdown: { labels: [...], data: [...] } }
         setMonthlyData({
@@ -177,18 +178,30 @@ export default function Dashboard() {
 
       <BudgetManager />
 
-      <ExpenseStats />
+      <BudgetOverviewSlider />
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Monthly Trend</h2>
-          <Line data={monthlyData} options={{ responsive: true }} />
+      {/* <ExpenseStats /> */}
+      {(monthlyData && Object.keys(monthlyData).length > 0) ||
+        (categoryData && Object.keys(categoryData).length > 0) ? (
+        <div className="grid md:grid-cols-2 gap-6">
+          {monthlyData && Object.keys(monthlyData).length > 0 && (
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h2 className="text-lg font-semibold mb-4">Monthly Trend</h2>
+              <Line data={monthlyData} options={{ responsive: true }} />
+            </div>
+          )}
+          {categoryData && Object.keys(categoryData).length > 0 && (
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+              <h2 className="text-lg font-semibold mb-4">Expenses by Category</h2>
+              <Pie data={categoryData} options={{ responsive: true }} />
+            </div>
+          )}
         </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Expenses by Category</h2>
-          <Pie data={categoryData} options={{ responsive: true }} />
-        </div>
-      </div>
+      ) : (""
+        // <p className="text-gray-500 dark:text-gray-400 text-center">
+        //   No data available to display.
+        // </p>
+      )}
 
       <RecentExpenses />
     </div>
