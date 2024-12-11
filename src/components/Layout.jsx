@@ -1,17 +1,28 @@
+
+import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
+import Navbar from './navigation/Navbar'
+import Sidebar from './navigation/Sidebar'
 
 export default function Layout() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
   return (
     <div className="min-h-screen">
-      <Navbar />
-      <div className="flex">
-        <Sidebar />
-        <main className="flex-1 p-6">
+      <Navbar
+        onMobileMenuToggle={toggleMobileMenu}
+        isMobileMenuOpen={isMobileMenuOpen}
+      />
+      <Sidebar isOpen={isMobileMenuOpen} />
+      <main className="lg:pl-64 pt-16">
+        <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
           <Outlet />
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   )
 }

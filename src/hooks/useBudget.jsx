@@ -5,9 +5,8 @@ const BudgetContext = createContext(null);
 
 export function BudgetProvider({ children }) {
   const [budget, setBudget] = useState(0);
-  const [totalExpenses, setTotalExpenses] = useState(0); // Initialize total expenses
+  const [totalExpenses, setTotalExpenses] = useState(0); 
 
-  // useEffect(() => {
     const fetchBudgetAndExpenses = async () => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -34,8 +33,7 @@ export function BudgetProvider({ children }) {
         }
       }
     };
-  //   fetchBudgetAndExpenses();
-  // }, []);
+  
 
   useEffect(() => {
     // Fetch initially

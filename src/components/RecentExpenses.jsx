@@ -8,7 +8,7 @@ export default function RecentExpenses() {
   useEffect(() => {
     const fetchRecentExpenses = async () => {
       try {
-        const token = localStorage.getItem('token'); // Assuming JWT token is stored in localStorage
+        const token = localStorage.getItem('token'); 
         const response = await fetch('http://localhost:5000/api/expenses?limit=3&sort=-date', {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -22,17 +22,17 @@ export default function ExpenseForm({ onClose }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}` // Assuming you store the JWT token in localStorage
+          Authorization: `Bearer ${localStorage.getItem('token')}` 
         },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result); // For debugging, to see the response from the backend
+        console.log(result); 
         toast.success('Expense added successfully');
         refreshExpenses();
-        onClose(); // Close the form if needed
+        onClose();
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || 'Failed to add expense');

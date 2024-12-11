@@ -428,10 +428,6 @@ const ExpenseTable = () => {
         throw new Error('Failed to update expense');
       }
   
-      // const updatedData = await response.json();
-      // setData((current) =>
-      //   current.map((item) => (item.id === updatedData.id ? updatedData : item))
-      // );
   
       toast.success('Expense updated successfully');
 

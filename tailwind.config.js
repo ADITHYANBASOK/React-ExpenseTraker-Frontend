@@ -20,7 +20,10 @@ export default {
           800: '#075985',
           900: '#0c4a6e',
         }
-      }
+      },
+      screens: {
+        'xs': '270px', // Custom breakpoint for extra small screens
+      },
     },
   },
   plugins: [],
