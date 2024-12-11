@@ -1,5 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
+import { useExpenseContext } from '../context/ExpenseContext'
+
 
 const categories = [
   'Food',
@@ -11,6 +13,8 @@ const categories = [
 
 export default function ExpenseForm({ onClose }) {
   const { register, handleSubmit, formState: { errors } } = useForm()
+  const { refreshExpenses } = useExpenseContext();
+
 
   const onSubmit = async (data) => {
     try {
@@ -27,6 +31,7 @@ export default function ExpenseForm({ onClose }) {
         const result = await response.json();
         console.log(result); // For debugging, to see the response from the backend
         toast.success('Expense added successfully');
+        refreshExpenses();
         onClose(); // Close the form if needed
       } else {
         const errorData = await response.json();

@@ -320,6 +320,8 @@ import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-hot-toast'; // Assuming you're using `react-toastify`
 import EditExpenseModal from './EditExpenseModel';
 import DeleteConfirmationModal from './DeleteConfirmationModel';
+import { useExpenseContext } from '../context/ExpenseContext';
+
 
 const columnHelper = createColumnHelper();
 
@@ -329,8 +331,9 @@ const ExpenseTable = () => {
   const [error, setError] = useState(null);
   const [editingExpense, setEditingExpense] = useState(null);
   const [deletingExpense, setDeletingExpense] = useState(null);
+  const { refreshExpenses } = useExpenseContext();
 
-  useEffect(() => {
+
     const fetchExpenses = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -357,14 +360,28 @@ const ExpenseTable = () => {
       }
     };
 
+
+
+  // useEffect(() => {
+  //   fetchExpenses();
+  // }, []);
+  useEffect(() => {
+    // Fetch initially
     fetchExpenses();
+
+    // Listen for refresh event
+    const handleRefresh = () => {
+      fetchExpenses();
+    };
+    window.addEventListener('refreshExpenses', handleRefresh);
+
+    // Cleanup listener
+    return () => {
+      window.removeEventListener('refreshExpenses', handleRefresh);
+    };
   }, []);
 
-  // const handleDelete = (expense) => {
-  //   setData((current) => current.filter((item) => item.id !== expense.id));
-  //   toast.success('Expense deleted successfully');
-  //   setDeletingExpense(null);
-  // };
+  
 
   const handleDelete = async (expense) => {
     const token = localStorage.getItem('token');
@@ -382,6 +399,8 @@ const ExpenseTable = () => {
       }
   
       toast.success('Expense deleted successfully');
+      refreshExpenses();
+
       setDeletingExpense(null);
     } catch (error) {
       toast.error(error.message);
@@ -389,16 +408,7 @@ const ExpenseTable = () => {
   };
   
 
-  // const handleEdit = (updatedExpense) => {
-  //   // setData((current) =>
-  //   //   current.map((item) =>
-  //   //     item.id === updatedExpense.id ? updatedExpense : item
-  //   //   )
-  //   // );
-  //   console.log("expenseid",updatedExpense)
-  //   toast.success('Expense updated successfully');
-  //   setEditingExpense(null);
-  // };
+
 
   const handleEdit = async (updatedExpense) => {
     const token = localStorage.getItem('token');
@@ -424,7 +434,10 @@ const ExpenseTable = () => {
       // );
   
       toast.success('Expense updated successfully');
+
       setEditingExpense(null);
+      refreshExpenses();
+
     } catch (error) {
       toast.error(error.message);
     }

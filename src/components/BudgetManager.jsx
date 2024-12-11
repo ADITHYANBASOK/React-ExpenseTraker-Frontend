@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useBudget } from '../hooks/useBudget'
 
 export default function BudgetManager() {
@@ -11,6 +11,9 @@ export default function BudgetManager() {
     updateBudget(newBudget)
     setIsEditing(false)
   }
+  useEffect(()=>{
+
+  },[budget])
 
   const remainingBudget = budget - totalExpenses
   const progress = budget > 0 ? (totalExpenses / budget) * 100 : 0

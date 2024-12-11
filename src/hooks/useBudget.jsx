@@ -7,7 +7,7 @@ export function BudgetProvider({ children }) {
   const [budget, setBudget] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0); // Initialize total expenses
 
-  useEffect(() => {
+  // useEffect(() => {
     const fetchBudgetAndExpenses = async () => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -34,8 +34,25 @@ export function BudgetProvider({ children }) {
         }
       }
     };
+  //   fetchBudgetAndExpenses();
+  // }, []);
+
+  useEffect(() => {
+    // Fetch initially
     fetchBudgetAndExpenses();
+
+    // Listen for refresh event
+    const handleRefresh = () => {
+      fetchBudgetAndExpenses();
+    };
+    window.addEventListener('refreshExpenses', handleRefresh);
+
+    // Cleanup listener
+    return () => {
+      window.removeEventListener('refreshExpenses', handleRefresh);
+    };
   }, []);
+
 
   const updateBudget = async (newBudget) => {
     try {
