@@ -1,8 +1,163 @@
-# React + Vite
+# ExpenseTracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern expense tracking application built with React and Vite, featuring a responsive design, dark mode support, and comprehensive expense management capabilities.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 💰 Expense Management
+  - Add, edit, and delete expenses
+  - Categorize expenses
+  - Track spending patterns
+  - Set budgets and receive alerts
+
+- 📊 Dashboard Analytics
+  - Monthly expense trends
+  - Category-wise breakdown
+  - Budget vs. actual spending
+  - Savings rate calculation
+
+- 🎨 Modern UI/UX
+  - Responsive design
+  - Dark/Light theme
+  - Mobile-first approach
+  - Smooth transitions
+
+- 🔒 Authentication
+  - User registration
+  - Secure login
+  - Protected routes
+
+## Project Structure
+
+```
+src/
+├── components/           # Reusable UI components
+│   ├── navigation/      # Navigation-related components
+│   │   ├── MobileMenuButton.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── NavLinks.jsx
+│   │   └── Sidebar.jsx
+│   ├── BudgetManager.jsx
+│   ├── DeleteConfirmationModal.jsx
+│   ├── EditExpenseModal.jsx
+│   ├── ExpenseForm.jsx
+│   ├── ExpenseStats.jsx
+│   ├── ExpenseTable.jsx
+│   ├── Layout.jsx
+│   ├── ProtectedRoute.jsx
+│   └── RecentExpenses.jsx
+│
+├── hooks/               # Custom React hooks
+│   ├── useAuth.jsx     # Authentication logic
+│   ├── useBudget.jsx   # Budget management
+│   └── useTheme.jsx    # Theme switching
+│
+├── pages/              # Page components
+│   ├── Dashboard.jsx   # Main dashboard
+│   ├── Expenses.jsx    # Expense management
+│   ├── Login.jsx       # User login
+│   └── Register.jsx    # User registration
+│
+├── App.jsx             # Root component
+├── main.jsx           # Application entry
+└── index.css          # Global styles
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd expense-tracker
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Build for production:
+```bash
+npm run build
+```
+
+## Technology Stack
+
+- **Frontend Framework**: React 18
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **State Management**: React Context + Hooks
+- **Form Handling**: React Hook Form
+- **Data Visualization**: Chart.js
+- **Routing**: React Router
+- **UI Components**: Headless UI
+- **Icons**: Heroicons
+- **Notifications**: React Hot Toast
+
+## Code Organization
+
+### Components
+- Each component is focused on a single responsibility
+- Reusable components are kept in the components directory
+- Complex components are broken down into smaller, manageable pieces
+
+### Hooks
+- Custom hooks extract and share common logic
+- Each hook serves a specific purpose (auth, theme, budget)
+- Hooks follow the React hooks naming convention
+
+### Pages
+- Page components represent different routes
+- Each page component focuses on layout and composition
+- Business logic is delegated to custom hooks
+
+### Best Practices
+
+1. **Component Structure**
+   - Props are documented and validated
+   - Components are kept small and focused
+   - Logic is extracted into custom hooks
+
+2. **State Management**
+   - Context is used for global state
+   - Local state for component-specific data
+   - Props for component communication
+
+3. **Performance**
+   - React.memo for expensive renders
+   - useMemo/useCallback where appropriate
+   - Proper key usage in lists
+
+4. **Accessibility**
+   - Semantic HTML elements
+   - ARIA attributes where needed
+   - Keyboard navigation support
+
+5. **Code Style**
+   - Consistent naming conventions
+   - Clear file organization
+   - Proper error handling
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

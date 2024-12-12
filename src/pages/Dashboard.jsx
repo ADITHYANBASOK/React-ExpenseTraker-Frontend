@@ -31,7 +31,7 @@ export default function Dashboard() {
       try {
         const token = localStorage.getItem('token'); // Assuming JWT token is stored in localStorage
         console.log('token', token)
-        const response = await fetch(`http://localhost:5000/api/expenses/dashboard?timeframe=${timeframe}`, {
+        const response = await fetch(`https://node-expense-traker-backend.vercel.app/api/expenses/dashboard?timeframe=${timeframe}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

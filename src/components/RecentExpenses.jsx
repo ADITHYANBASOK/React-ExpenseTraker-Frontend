@@ -9,7 +9,7 @@ export default function RecentExpenses() {
     const fetchRecentExpenses = async () => {
       try {
         const token = localStorage.getItem('token'); 
-        const response = await fetch('http://localhost:5000/api/expenses?limit=3&sort=-date', {
+        const response = await fetch('https://node-expense-traker-backend.vercel.app/api/expenses?limit=3&sort=-date', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

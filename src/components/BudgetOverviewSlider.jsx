@@ -20,7 +20,7 @@ export default function BudgetOverviewSlider() {
     const fetchExpenses = async () => {
       try {
         const token = localStorage.getItem('token'); // Assuming JWT token is stored in localStorage
-        const response = await fetch('http://localhost:5000/api/expenses/monthly', {
+        const response = await fetch('https://node-expense-traker-backend.vercel.app/api/expenses/monthly', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

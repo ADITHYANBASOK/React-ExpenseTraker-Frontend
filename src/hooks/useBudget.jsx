@@ -12,14 +12,14 @@ export function BudgetProvider({ children }) {
       if (token) {
         try {
           // Fetch budget
-          const budgetResponse = await fetch('http://localhost:5000/api/budget', {
+          const budgetResponse = await fetch('https://node-expense-traker-backend.vercel.app/api/budget', {
             headers: { Authorization: `Bearer ${token}` },
           });
           const budgetData = await budgetResponse.json();
           setBudget(budgetData.amount || 0);
 
           // Fetch expenses
-          const expensesResponse = await fetch('http://localhost:5000/api/expenses/currentMonth', {
+          const expensesResponse = await fetch('https://node-expense-traker-backend.vercel.app/api/expenses/currentMonth', {
             headers: { Authorization: `Bearer ${token}` },
           });
           const expensesData = await expensesResponse.json();
@@ -54,7 +54,7 @@ export function BudgetProvider({ children }) {
 
   const updateBudget = async (newBudget) => {
     try {
-      const response = await fetch('http://localhost:5000/api/budget', {
+      const response = await fetch('https://node-expense-traker-backend.vercel.app/api/budget', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
