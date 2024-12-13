@@ -94,7 +94,7 @@ export default function Dashboard() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-      
+
       </div>
 
       <BudgetManager />
@@ -102,27 +102,38 @@ export default function Dashboard() {
       <BudgetOverviewSlider />
 
       {/* <ExpenseStats /> */}
-      {(monthlyData && Object.keys(monthlyData).length > 0) ||
-        (categoryData && Object.keys(categoryData).length > 0) ? (
-        <div className="grid md:grid-cols-2 gap-6 xs:grid-cols-1">
-          {monthlyData && Object.keys(monthlyData).length > 0 && (
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-              <h2 className="text-lg font-semibold mb-4">Monthly Trend</h2>
-              <Line data={monthlyData} options={{ responsive: true }} />
-            </div>
-          )}
-          {categoryData && Object.keys(categoryData).length > 0 && (
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-              <h2 className="text-lg font-semibold mb-4">This Months Expenses by Category</h2>
-              <Pie data={categoryData} options={{ responsive: true }} />
-            </div>
-          )}
-        </div>
-      ) : (""
-        // <p className="text-gray-500 dark:text-gray-400 text-center">
-        //   No data available to display.
-        // </p>
-      )}
+      <div className="grid md:grid-cols-2 gap-6 xs:grid-cols-1">
+      {console.log("Monthly Data:", monthlyData)}
+
+        {monthlyData && Object.keys(monthlyData.labels).length > 0 ? (
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+            <h2 className="text-lg font-semibold mb-4">Monthly Trend</h2>
+            <Line data={monthlyData} options={{ responsive: true }} />
+          </div>
+        ) : (
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+            <h2 className="text-lg font-semibold mb-4">Monthly Trend</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-center">
+              No data available for monthly trend.
+            </p>
+          </div>
+        )}
+
+        {categoryData && Object.keys(categoryData.labels).length > 0 ? (
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+            <h2 className="text-lg font-semibold mb-4">This Month's Expenses by Category</h2>
+            <Pie data={categoryData} options={{ responsive: true }} />
+          </div>
+        ) : (
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+            <h2 className="text-lg font-semibold mb-4">This Month's Expenses by Category</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-center">
+              No data available for category breakdown.
+            </p>
+          </div>
+        )}
+      </div>
+
 
       <RecentExpenses />
     </div>

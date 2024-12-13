@@ -25,31 +25,31 @@ const ExpenseTable = () => {
   const { refreshExpenses } = useExpenseContext();
 
 
-    const fetchExpenses = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('https://node-expense-traker-backend.vercel.app/api/expenses', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const fetchExpenses = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('https://node-expense-traker-backend.vercel.app/api/expenses', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch expenses');
-        }
-
-        const expenses = await response.json();
-        console.log("expenses",expenses)
-        const sortedExpenses = expenses.sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
-        );
-        setData(sortedExpenses);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error('Failed to fetch expenses');
       }
-    };
+
+      const expenses = await response.json();
+      console.log("expenses", expenses)
+      const sortedExpenses = expenses.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setData(sortedExpenses);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
 
@@ -69,11 +69,11 @@ const ExpenseTable = () => {
     };
   }, []);
 
-  
+
 
   const handleDelete = async (expense) => {
     const token = localStorage.getItem('token');
-    console.log("expense5",expense)
+    console.log("expense5", expense)
     try {
       const response = await fetch(`https://node-expense-traker-backend.vercel.app/api/expenses/${expense._id}`, {
         method: 'DELETE',
@@ -81,11 +81,11 @@ const ExpenseTable = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to delete expense');
       }
-  
+
       toast.success('Expense deleted successfully');
       refreshExpenses();
 
@@ -94,13 +94,13 @@ const ExpenseTable = () => {
       toast.error(error.message);
     }
   };
-  
+
 
 
 
   const handleEdit = async (updatedExpense) => {
     const token = localStorage.getItem('token');
-    console.log("updatedExpense",updatedExpense)
+    console.log("updatedExpense", updatedExpense)
 
     try {
       const response = await fetch(`https://node-expense-traker-backend.vercel.app/api/expenses/${updatedExpense._id}`, {
@@ -111,12 +111,12 @@ const ExpenseTable = () => {
         },
         body: JSON.stringify(updatedExpense),
       });
-  
+
       if (!response.ok) {
         throw new Error('Failed to update expense');
       }
-  
-  
+
+
       toast.success('Expense updated successfully');
 
       setEditingExpense(null);
@@ -140,7 +140,7 @@ const ExpenseTable = () => {
       return acc;
     }, {});
   };
- 
+
 
   const groupedExpenses = groupByMonth(data);
 
@@ -193,38 +193,38 @@ const ExpenseTable = () => {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-      {Object.entries(groupedExpenses).map(([month, expenses]) => {
-        const totalMonthExpense = expenses.reduce(
-          (acc, expense) => acc + expense.amount,
-          0
-        );
-        console.log("expenses1",expenses)
+  {Object.keys(groupedExpenses).length > 0 ? (
+    Object.entries(groupedExpenses).map(([month, expenses]) => {
+      const totalMonthExpense = expenses.reduce(
+        (acc, expense) => acc + expense.amount,
+        0
+      );
 
-        return (
-          <div key={month} className="mb-8">
-            <h2 className="text-lg font-bold p-4 bg-gray-100 dark:bg-gray-700">
-              {month} - Total: ${totalMonthExpense.toFixed(2)}
-            </h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <tr
-                      key={headerGroup.id}
-                      className="border-b dark:border-gray-700"
-                    >
-                      {headerGroup.headers.map((header) => (
-                        <th key={header.id} className="text-left p-4">
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody>
+      return (
+        <div key={month} className="mb-8">
+          <h2 className="text-lg font-bold p-4 bg-gray-100 dark:bg-gray-700">
+            {month} - Total: ${totalMonthExpense.toFixed(2)}
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr
+                    key={headerGroup.id}
+                    className="border-b dark:border-gray-700"
+                  >
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id} className="text-left p-4">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody>
                 {expenses.map((expense) => (
                   <tr key={expense.id}>
                     {table.getRowModel().rows
@@ -238,28 +238,35 @@ const ExpenseTable = () => {
                   </tr>
                 ))}
                 </tbody>
-              </table>
-            </div>
+            </table>
           </div>
-        );
-      })}
-
-      {editingExpense && (
-        <EditExpenseModal
-          expense={editingExpense}
-          onClose={() => setEditingExpense(null)}
-          onSave={handleEdit}
-        />
-      )}
-
-      {deletingExpense && (
-        <DeleteConfirmationModal
-          expense={deletingExpense}
-          onClose={() => setDeletingExpense(null)}
-          onConfirm={() => handleDelete(deletingExpense)}
-        />
-      )}
+        </div>
+      );
+    })
+  ) : (
+    <div className="text-center p-8">
+      <p className="text-gray-500 dark:text-gray-400">
+        No data found.
+      </p>
     </div>
+  )}
+
+  {editingExpense && (
+    <EditExpenseModal
+      expense={editingExpense}
+      onClose={() => setEditingExpense(null)}
+      onSave={handleEdit}
+    />
+  )}
+
+  {deletingExpense && (
+    <DeleteConfirmationModal
+      expense={deletingExpense}
+      onClose={() => setDeletingExpense(null)}
+      onConfirm={() => handleDelete(deletingExpense)}
+    />
+  )}
+</div>
   );
 };
 

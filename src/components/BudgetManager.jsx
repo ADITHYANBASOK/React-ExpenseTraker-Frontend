@@ -26,7 +26,7 @@ export default function BudgetManager() {
           onClick={() => setIsEditing(!isEditing)}
           className="text-primary-600 hover:text-primary-700"
         >
-          {isEditing ? 'Cancel' : 'Edit Budget'}
+          {isEditing ? 'Cancel' : budget? 'Edit Budget' : 'Add Budget'}
         </button>
       </div>
 
